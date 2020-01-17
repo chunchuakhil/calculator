@@ -1,20 +1,39 @@
-const express = require('express') //gets repress package into this file
-    //now execute express package
-const app = express();
-//now create routes
-//get--get response from the server
-app.get('/', (req, res) => {
-        res.send('we are on home')
-    })
-    //post--to submiting the form to server
-    //patch to update the post
-    //get to get the information
-    //post give the information
+//import {CallculaterImpl} from "./CalcImpl.js";
 
-app.get('/show', (req, res) => {
-        res.send('i am showing something')
-    })
-    //first bootUp the server
-app.listen(3030, () => {
-    console.log('server started....')
+const functions=require('./CalcImpl.js')
+const Hapi = require('hapi');
+const server = new Hapi.Server({port: 3000,host:'localhost'}); 
+//let obj=new CallculaterImpl();
+//obj.add();
+
+
+server.route({
+	method: 'GET',        
+	path: '/{name*}',//*is an optional param
+	handler: function(request, response) { 
+		return 'Hello ' + request.params.name; 
+	}
 });
+
+server.route({
+	method: 'GET',        
+	path: '/add', 
+	handler: function(request, response) {
+		var x=functions.CallculaterImpl.add(20,30);
+		console.log(x)
+		
+					
+			//return 'add is called'
+
+		
+
+		
+		//return 'i am trying to add something'; 
+	}
+});
+
+
+
+
+server.start();
+console.log('server started');
